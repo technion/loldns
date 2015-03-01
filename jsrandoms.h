@@ -1,0 +1,1 @@
+void jsextrarandom(char *seed);

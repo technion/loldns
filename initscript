@@ -1,0 +1,42 @@
+#!/bin/sh
+# chkconfig: 2345 85 15
+# description: Loldns server
+
+
+. /etc/rc.d/init.d/functions
+
+case "$1" in
+
+start)
+	echo -n "Starting DNS services:"
+	if [ -f /etc/sysconfig/dnscache ]
+	then
+	for i in `cat /etc/sysconfig/dnscache `
+	do
+		daemon "DIR=$i /usr/local/bin/startcache "
+	done
+	fi
+
+	if [ -f /etc/sysconfig/dnstiny ]
+	then
+	for i in `cat /etc/sysconfig/dnstiny `
+	do
+		daemon "DIR=$i /usr/local/bin/starttiny "
+	done
+	fi
+
+	echo
+	;;
+stop)
+	echo -n "Stopping DNS services:"
+	killall tinydns
+	killall dnscache
+	echo
+	;;
+restart)
+	stop
+	start
+	;;
+*)
+	echo "Usage: RTFM"
+esac
